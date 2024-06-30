@@ -10,10 +10,19 @@ use serde_json::Value;
 async fn root_route(meals: web::Data<Value>) -> impl Responder {
     println!("root triggered");
 
-    HttpResponse::Ok()
-        .body(meals.to_string())
-        .customize()
-        .insert_header(("content-type", "application/json"))
+    if meals.as_object().is_none() {
+        return HttpResponse::InternalServerError()
+            .body("{\"Error\": \"Requested day data is unavailable.\"}")
+            .customize()
+            .insert_header(("content-type", "application/json"));
+    } else {
+        return HttpResponse::Ok()
+            .body(meals.to_string())
+            .customize()
+            .insert_header(("content-type", "application/json"));
+    }
+
+    
 }
 
 #[get("/day/{day}")]
@@ -42,7 +51,7 @@ async fn today_route(meals: web::Data<Value>) -> impl Responder {
     let today = Local::now();
     let today_str = today.format("%d.%m.%Y").to_string();
 
-    if meals[&today_str].as_object().is_none() {
+    if meals[&today_str].as_object().is_none() || meals[&today_str].as_object().unwrap().is_empty() {
         return HttpResponse::InternalServerError()
             .body("{\"Error\": \"Requested day data is unavailable.\"}")
             .customize()
@@ -62,7 +71,7 @@ async fn tomorrow_route(meals: web::Data<Value>) -> impl Responder {
     let tomorrow = Local::now() + chrono::Duration::days(1);
     let tomorrow_str = tomorrow.format("%d.%m.%Y").to_string();
 
-    if meals[&tomorrow_str].as_object().is_none() {
+    if meals[&tomorrow_str].as_object().is_none() || meals[&tomorrow_str].as_object().unwrap().is_empty() {
         return HttpResponse::InternalServerError()
             .body("{\"Error\": \"Requested day data is unavailable.\"}")
             .customize()
