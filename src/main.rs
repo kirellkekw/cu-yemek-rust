@@ -94,7 +94,6 @@ async fn main() -> std::io::Result<()> {
 
     let meals: Value = serde_json::from_str(&resp).unwrap();
 
-    // pass meals to the routes with web::Data
     HttpServer::new(move || {
         App::new()
             .app_data(Data::new(meals.clone()))
