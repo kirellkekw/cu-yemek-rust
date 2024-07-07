@@ -27,14 +27,14 @@ pipeline {
                     // Stop and remove the existing container if it exists
                     sh '''
                     if [ $(docker ps -a -q --filter name=cu-yemek-rust) ]; then
-                        docker compose down
+                        docker stop cu-yemek-rust
                         docker rm cu-yemek-rust
                     fi
                     '''
 
                     // Run the new container
                     sh '''
-                    docker compose up
+                    docker run -d -p 31000:2002 --name cu-yemek-rust --restart always ${env.IMAGE_NAME}:${env.BUILD_NUMBER} 
                     '''
                 }
             }
