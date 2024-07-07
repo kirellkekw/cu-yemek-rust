@@ -33,9 +33,7 @@ pipeline {
                     '''
 
                     // Run the new container
-                    sh "
-                    docker run -d -p 31000:2002 --name cu-yemek-rust --restart always ${env.IMAGE_NAME}:${env.BUILD_NUMBER} 
-                    "
+                    sh "docker run -d -p 31000:2002 --name cu-yemek-rust --restart always ${env.IMAGE_NAME}:${env.BUILD_NUMBER}"
                 }
             }
         }
