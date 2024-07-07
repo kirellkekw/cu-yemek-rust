@@ -27,14 +27,14 @@ pipeline {
                     // Stop and remove the existing container if it exists
                     sh '''
                     if [ $(docker ps -a -q --filter name=cu-yemek-rust) ]; then
-                        docker-compose down
+                        docker compose down
                         docker rm cu-yemek-rust
                     fi
                     '''
 
                     // Run the new container
                     sh '''
-                    docker-compose up
+                    docker compose up
                     '''
                 }
             }
