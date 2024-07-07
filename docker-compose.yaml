@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-  ytflex:
+  cu-yemek:
     image: cu-yemek-rust:1.0.0
     container_name: cu-yemek-rust
     restart: always
