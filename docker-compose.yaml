@@ -1,0 +1,9 @@
+version: '3'
+
+services:
+  ytflex:
+    image: cu-yemek-rust:1.0.0
+    container_name: cu-yemek-rust
+    restart: always
+    ports:
+      - "31000:2002"
